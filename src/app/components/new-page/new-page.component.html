@@ -1,0 +1,71 @@
+<div class="main">
+  <div class="container">
+    <div class="col align-self-center">
+      <div class="row justify-content-center" style="margin-top: 2em;">
+        <mat-form-field appearance="legacy">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Placeholder" [(ngModel)]="spaceMarine.name">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Enter the space marine's name</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+        <mat-form-field appearance="legacy">
+          <mat-label>Category</mat-label>
+          <mat-select [(value)]="spaceMarine.category">
+            <mat-option value="HELIX">HELIX</mat-option>
+            <mat-option value="INCEPTOR">INCEPTOR</mat-option>
+            <mat-option value="AGGRESSOR">AGGRESSOR</mat-option>
+            <mat-option value="SCOUT">SCOUT</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+        <mat-form-field appearance="legacy">
+          <mat-label>Melee Weapon</mat-label>
+          <mat-select [(value)]="spaceMarine.meleeWeapon">
+            <mat-option value="CHAIN_SWORD">CHAIN SWORD</mat-option>
+            <mat-option value="POWER_SWORD">POWER SWORD</mat-option>
+            <mat-option value="CHAIN_AXE">CHAIN AXE</mat-option>
+            <mat-option value="POWER_BLADE">POWER BLADE</mat-option>
+            <mat-option value="POWER_FIST">POWER FIST</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+        <mat-form-field appearance="legacy">
+          <mat-label>Height</mat-label>
+          <input matInput type="number" [(ngModel)]="spaceMarine.height" min="0">
+          <mat-hint>Select the space marine's height</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+        <mat-form-field appearance="legacy">
+          <mat-label>Health</mat-label>
+          <input matInput type="number" [(ngModel)]="spaceMarine.health" min="0">
+          <mat-hint>Select the space marine's health</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+        <mat-form-field appearance="legacy">
+          <mat-label>X coordinate</mat-label>
+          <input matInput type="number" [(ngModel)]="spaceMarine.coordinateX" min="-897">
+          <mat-hint>Select the space marine's x coordinate</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+        <mat-form-field appearance="legacy">
+          <mat-label>Y coordinate</mat-label>
+          <input matInput type="number" [(ngModel)]="spaceMarine.coordinateY" min="-726">
+          <mat-hint>Select the space marine's y coordinate</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+        <button mat-raised-button color="primary" (click)="createSpaceMarine()">Create new!</button>
+      </div>
+      <div class="row justify-content-center" style="margin-top: 1em;">
+          <mat-card color="warn" *ngIf="errorMsg">There was an error!</mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<mat-card>
+  <mat-card-title>Space marines
+    <button mat-button [routerLink]="['/new']">
+      CREATE NEW
+    </button>
+  </mat-card-title>
+  <mat-label>Find space marine when category is greater than </mat-label>
+  <mat-form-field appearance="legacy">
+    <mat-select [(value)]="spaceMarineCategory">
+      <mat-option value="HELIX">HELIX</mat-option>
+      <mat-option value="INCEPTOR">INCEPTOR</mat-option>
+      <mat-option value="AGGRESSOR">AGGRESSOR</mat-option>
+      <mat-option value="SCOUT">SCOUT</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button style="margin: 2em" mat-raised-button color="primary" (click)="findSpaceMarineWhenCategory()">Find!</button>
+  <br>
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-4">
+        <mat-form-field>
+          <mat-label>Filter space marines</mat-label>
+          <input matInput type="text" [(ngModel)]="filterString" (keyup.enter)="filterSpaceMarine()" placeholder="Search space marine">
+        </mat-form-field>
+      </div>
+      <div class="col-4">
+        <mat-label>Delete space marines by health</mat-label>
+        <mat-form-field>
+          <mat-label>Health</mat-label>
+          <input matInput type="text" [(ngModel)]="deleteString" placeholder="Search space marine">
+        </mat-form-field>
+        <button style="margin: 2em" mat-raised-button color="primary" (click)="deleteSpaceMarineWhenHealth()">Delete!</button>
+      </div>
+    </div>
+  </div>
+  <mat-card-content>
+    <div>
+      <mat-label>Mean health: </mat-label>
+      <mat-label>{{meanHealth}}</mat-label>
+    </div>
+  </mat-card-content>
+  <mat-card-content>
+    <mat-table #table [dataSource]="spaceMarineDataSource" matSort class="mat-elevation-z2">
+      <ng-container matColumnDef="Name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Health">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Health </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.health}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Height">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Height </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.height}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Category">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Melee Weapon">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Melee Weapon </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.meleeWeapon}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ChapterName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Chapter's name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.chapterName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ChapterMarinesCount">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Chapter's space marines </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.chapterMarinesCount}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="CoordinateX">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> X </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.coordinateX}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="CoordinateY">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Y </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.coordinateY}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Delete">
+        <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-raised-button color="warn" (click)="deleteSpaceMarineById(element.id)">X</button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card-content>
+  <mat-card-content>
+    <mat-paginator #paginator [length]="resultsLength"
+                   [pageIndex]="pageNumber"
+                   [pageSize]="5"
+                   [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>
