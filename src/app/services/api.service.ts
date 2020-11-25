@@ -15,23 +15,31 @@ import {Router} from "@angular/router";
 export class ApiService {
   private apiEndpoint: string;
   private apiAllSpaceMarine: string;
-  private apiCreateNewSpaceMarine: string;
-  private apiDeleteSpaceMarine;
+  private apiSpaceMarine: string;
   private apiMeanHealth: string;
   private apiDeleteByHealth: string;
   private apiFindSpaceMarineWhereCategory: string;
+  private httpOptions;
 
   constructor(
     private http: HttpClient,
     private ngxXml2jsonService: NgxXml2jsonService,
     private router: Router){
-    this.apiEndpoint = "http://localhost:8091/space_marines_war";
-    this.apiCreateNewSpaceMarine = "/space/marine/create";
-    this.apiAllSpaceMarine = "/space/marine/all";
-    this.apiDeleteSpaceMarine = (id) => `/space/marine/${id}/delete`;
+    // this.apiEndpoint = "http://localhost:8091/space_marines_war";
+    this.apiEndpoint = "http://localhost:8080/space_marines_war_exploded";
+    this.apiSpaceMarine = "/space/marine";
+    this.apiAllSpaceMarine = "/space/marines";
     this.apiMeanHealth = "/space/marine/health/mean";
     this.apiDeleteByHealth = "/space/marine/health/";
     this.apiFindSpaceMarineWhereCategory = "/space/marine/category";
+
+  this.httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/xml',
+      'Accept': 'application/xml',
+      'Response-Type': 'text'
+    })
+  };
   }
 
   public getAllSpaceMarines(sort: string = '', order: string = '', page: number = 1, perPage: number = 5, filterString: string = "") : Observable<PageableSpaceMarinesDto> {
@@ -44,11 +52,20 @@ export class ApiService {
   };
 
   public deleteSpaceMarine(spaceMarineId: number) {
-    return this.http.delete(this.apiEndpoint + this.apiDeleteSpaceMarine(spaceMarineId));
+    return this.http.delete(this.apiEndpoint + this.apiSpaceMarine + `/${spaceMarineId}`);
   }
 
   public findSpaceMarineWhereCategory(category: string){
     return this.http.get(this.apiEndpoint  + this.apiFindSpaceMarineWhereCategory + `/${this.mapCategoryStringToInt(category)}`, {responseType: 'text'})
+      .pipe(
+        map((res) => {
+          let xmlToJson = converter.xml2json(res, {compact: true, spaces: 2});
+          return JSON.parse(xmlToJson);
+        }));
+  }
+
+  public findSpaceMarineById(id: number){
+    return this.http.get(this.apiEndpoint + this.apiSpaceMarine + `/${id}`, {responseType: 'text'})
       .pipe(
         map((res) => {
           let xmlToJson = converter.xml2json(res, {compact: true, spaces: 2});
@@ -71,14 +88,6 @@ export class ApiService {
   }
 
   public createNewSpaceMarine(spaceMarine: SpaceMarine): boolean {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/xml',
-        'Accept': 'application/xml',
-        'Response-Type': 'text'
-      })
-    };
-
     let spaceMarineXml: string = SpaceMarine.getSpaceMarineXmlPattern()(
       spaceMarine.name,
       spaceMarine.height,
@@ -90,8 +99,27 @@ export class ApiService {
       spaceMarine.coordinateX,
       spaceMarine.coordinateY);
 
-    this.http.put(this.apiEndpoint + this.apiCreateNewSpaceMarine, spaceMarineXml, httpOptions).subscribe(
-      result => this.router.navigate(['table'])
+    this.http.post(this.apiEndpoint + this.apiSpaceMarine, spaceMarineXml, this.httpOptions).subscribe(
+      result => this.router.navigate([''])
+    );
+
+    return true;
+  }
+
+  public updateSpaceMarine(spaceMarine: SpaceMarine, spaceMarineId: number): boolean {
+    let spaceMarineXml: string = SpaceMarine.getSpaceMarineXmlPattern()(
+      spaceMarine.name,
+      spaceMarine.height,
+      spaceMarine.category,
+      spaceMarine.health,
+      spaceMarine.meleeWeapon,
+      spaceMarine.chapterName,
+      spaceMarine.chapterMarinesCount,
+      spaceMarine.coordinateX,
+      spaceMarine.coordinateY);
+
+    this.http.put(this.apiEndpoint + this.apiSpaceMarine + `/${spaceMarineId}`, spaceMarineXml, this.httpOptions).subscribe(
+      result => this.router.navigate([''])
     );
 
     return true;

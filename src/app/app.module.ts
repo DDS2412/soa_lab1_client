@@ -22,6 +22,7 @@ import {FormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSortModule} from "@angular/material/sort";
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { UpdatePageComponent } from './components/update-page/update-page.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
     NavbarComponent,
     NewPageComponent,
     TablePageComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    UpdatePageComponent
   ],
   imports: [
     BrowserModule,

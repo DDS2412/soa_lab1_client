@@ -1,11 +1,10 @@
-import {AfterViewInit, ViewChild, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {ApiService} from "../../services/api.service";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
-import {merge, Observable, observable} from "rxjs";
+import {merge, Observable} from "rxjs";
 import {SpaceMarine} from "../../models/space.marine";
-import {PageableSpaceMarinesDto} from "../../models/pageable.space.marines.dto";
 import {MatSort} from "@angular/material/sort";
 
 @Component({
@@ -26,7 +25,8 @@ export class TablePageComponent implements OnInit, AfterViewInit {
     'ChapterMarinesCount',
     'CoordinateX',
     'CoordinateY',
-    'Delete'];
+    'Delete',
+    'Update'];
 
   resultsLength = 0;
   pageNumber = 0;
@@ -53,7 +53,6 @@ export class TablePageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.apiService.fetchLatest());
   }
 
   public filterSpaceMarine(){
